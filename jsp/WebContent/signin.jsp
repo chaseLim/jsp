@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-
     pageEncoding="UTF-8"%>
+<%@ include file="/common/header.jsp" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
@@ -13,6 +13,29 @@
 <title>Insert title here</title>
 
 </head>
+
+<script>
+$(document).ready(function(){
+	$("input[type='button']").click(function(){
+		var params = {};
+		params["id"] = $("#id").val();
+		params["pwd"] = $("#pwd").val();
+		params["name"] = $("#name").val();
+		params["admin"] = $("#admin").val();
+		
+		var hobby = $('input[name="hobby"]:checked').map(function(){
+			return $(this).val();
+		}).toArray();
+		
+		params["hobby"] = hobby.toString();
+		params = JSON.stringify(params);
+		
+		var param = encodeURI("?command=signin&param=" + params);
+		var au = new AjaxUtil(param);
+		au.send();
+	})
+});
+</script>
 
 <body>
 
@@ -55,22 +78,23 @@
 	<td align="center">취미</td>
 
 	<td>
-
-	잠자기<input type="checkbox" name="hobby" value="잠자기">
-
-	게임<input type="checkbox" name="hobby" value="게임">
-
-	독서<input type="checkbox" name="hobby" value="독서">
-
-	음악<input type="checkbox" name="hobby" value="음악">
-
+		잠자기<input type="checkbox" name="hobby" value="잠자기">
+		게임<input type="checkbox" name="hobby" value="게임">
+		독서<input type="checkbox" name="hobby" value="독서">
+		음악<input type="checkbox" name="hobby" value="음악">
 	</td>
-
 </tr>
-
+<tr>
+	<td align = "center"> 관리자여부</td>
+	<td>
+		<select  name = "admin" id="admin">
+				<option value="1">Y</option>
+				<option value="0">N</option>
+		</select>
+	</td>
 <tr>
 
-	<td colspan="2" align="center"><input type="submit" value="회원가입" /></td>
+	<td colspan="2" align="center"><input type="button" value="회원가입" /></td>
 
 </tr> 
 

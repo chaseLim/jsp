@@ -17,15 +17,21 @@
 
 <body>
 <%
-if(session.getAttribute("user")==null){
-	RequestDispatcher dis = request.getRequestDispatcher("/login.jsp");
-	dis.forward(request, response);
-		
-}
+String userNo = request.getParameter("userNo");
 Map<String, String> user = (Map)session.getAttribute("user");
-
-
 %>
+<script>
+function callback(result){
+	alert(result);
+}
+$(document).ready(function(){
+	var param = "?command=view&userNo=<%=userNo%>";
+	param = encodeURI(param);
+	var au = new AjaxUtil(param);
+	au.changeCallBack(callback);
+	au.send();	
+})
+</script>
 <form action="sigin.user" method="post">
 
 <table border="1" cellspacing="0" cellpadding="0" width="400" align="center">

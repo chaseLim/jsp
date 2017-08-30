@@ -46,11 +46,17 @@ var AjaxUtil = function(params){
 function setEvent(){
 	$("input[type='button']").click(function(){
 		var url = this.getAttribute("data-url");
-		if(url.split(".")[1]=="user"){
-			var param ="?command=list&name="+$("#name").val();
-			var au = new AjaxUtil(param);
-			au.send();			
+		if(url){
+			if(url.split(".")[1]=="user"){
+				var param ="?command=list&name="+$("#name").val();
+				var au = new AjaxUtil(param);
+				au.send();			
+			}
+		}else{
+			var userNum = this.getAttribute("data-num");
+			alert(userNum);
 		}
+
 	});
 }
 

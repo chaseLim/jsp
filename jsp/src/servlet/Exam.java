@@ -1,19 +1,17 @@
 package servlet;
 
-public class Exam {
+import java.util.HashMap;
 
-	String str;
+import com.google.gson.Gson;
+
+public class Exam {
 	
 	public static void main(String[] args) {
-		Exam e = new Exam();
-		e.str = new String("asdf");
 		
-		System.out.println(e.str);
-		try {
-			System.out.println(e.str.toUpperCase());
-		}catch(Exception e1){
-			System.out.println("뭔지는 모르겠는데 에러가 났을것이여!");
-		}
-		
+		String str = "{\"key1\":\"value\",\"key2\":\"value2\"}";
+		Gson g = new Gson();
+		HashMap<String, String> hm = g.fromJson(str, HashMap.class);
+		System.out.println(hm);
 	}
+
 }

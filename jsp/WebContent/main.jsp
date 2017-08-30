@@ -45,7 +45,7 @@ $("input[type='button']").click(function(){
 		$("#command").val(url.split(".")[0].replace("/",""));
 		this.form.submit();
 	}else{
-		location.href = url;
+		location.href = url + "?userNo=<%=user_no%>";
 	}
 })
 

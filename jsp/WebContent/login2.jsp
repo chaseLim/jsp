@@ -7,6 +7,6 @@
 <jsp:include page="/common/left.jsp"/>
 
 이녀석은 로그인화면입니다.<br>
-<%=commonStr %>
+
 </body>
 </html>

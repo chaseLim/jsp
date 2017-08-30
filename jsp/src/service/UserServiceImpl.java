@@ -49,8 +49,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public int insertUser(Map<String, String> hm) {
-		String sql = "Insert into user(id,pwd,name,hobby)";
-		sql+="values(?,?,?,?)";
+		String sql = "Insert into user(id,pwd,name,hobby,admin)";
+		sql+="values(?,?,?,?,?)";
 		Connection con;
 		try {
 			DBCon db = new DBCon();
@@ -60,12 +60,13 @@ public class UserServiceImpl implements UserService{
 			ps.setString(2, hm.get("pwd"));
 			ps.setString(3, hm.get("name"));
 			ps.setString(4, hm.get("hobby"));
+			ps.setString(5, hm.get("admin"));
 			
 			int rCnt = ps.executeUpdate();
 			return rCnt;
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 		return 0;
@@ -142,6 +143,35 @@ public class UserServiceImpl implements UserService{
 			// TODO: handle exception
 		}
 		return userList;
+	}
+
+	@Override
+	public Map<String, String> selectUser(String userNo) {
+		Connection con;		
+		try {
+			DBCon db = new DBCon();
+			con = db.getCon();
+			String sql = "select * from user where user_no = ?";
+
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, userNo);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+								
+					Map<String,String> hm = new HashMap<String, String>();
+					hm.put("id", rs.getString("id"));
+					hm.put("user_no", rs.getString("user_no"));				
+					hm.put("name", rs.getString("name"));
+					hm.put("hobby", rs.getString("hobby"));					
+					hm.put("admin", rs.getString("admin"));
+										
+					return hm;				
+						
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return null;
 	}
 
 }

@@ -1,16 +1,6 @@
 <%@page import="java.util.Map"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-
-    pageEncoding="UTF-8"%>
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
-<html>
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/common/header.jsp" %>
 <title>Insert title here</title>
 
 </head>
@@ -18,11 +8,18 @@
 <body>
 <%
 String userNo = request.getParameter("userNo");
-Map<String, String> user = (Map)session.getAttribute("user");
 %>
 <script>
 function callback(result){
-	alert(result);
+	$("#id").val(result.id);
+	$("#name").val(result.name);
+	if(result.hobby){
+		var hobbies = result.hobby.split(",");
+		for(var i=0 , max=hobbies.length;i<max;i++){
+			$("input[value='"+hobbies[i]+"']").prop("checked",true);
+		}
+	}
+	$("#userNo").val(result.user_no);		
 }
 $(document).ready(function(){
 	var param = "?command=view&userNo=<%=userNo%>";
@@ -42,7 +39,7 @@ $(document).ready(function(){
 
 <tr>
 	<td align="center">아이디</td>
-	<td><input type="text" name="id" id="id" value=<%=user.get("id") %> /></td>
+	<td><input type="text" name="id" id="id"  /></td>
 
 </tr>
 
@@ -58,7 +55,7 @@ $(document).ready(function(){
 
 	<td align="center">이름</td>
 
-	<td><input type="text" name="name" id="name" maxlength="100"value="<%=user.get("name") %>"/></td>
+	<td><input type="text" name="name" id="name" maxlength="100"/></td>
 
 <tr>
 
@@ -68,12 +65,12 @@ $(document).ready(function(){
 
 	<td>
 
-	잠자기<input type="checkbox" name="hobby" value="잠자기" <%=user.get("hobby").indexOf("잠자기")!=-1?"checked":"" %>>
+	잠자기<input type="checkbox" name="hobby" value="잠자기" >
 
-	게임<input type="checkbox" name="hobby" value="게임"  <%=user.get("hobby").indexOf("게임")!=-1?"checked":""%> >
+	게임<input type="checkbox" name="hobby" value="게임"  >
 
-	독서<input type="checkbox" name="hobby" value="독서"  <%=user.get("hobby").indexOf("독서")!=-1?"checked":""%>>
-	음악<input type="checkbox" name="hobby" value="음악"  <%=user.get("hobby").indexOf("음악")!=-1?"checked":""%>>
+	독서<input type="checkbox" name="hobby" value="독서" >
+	음악<input type="checkbox" name="hobby" value="음악"  >
 
 	</td>
 
@@ -88,7 +85,7 @@ $(document).ready(function(){
 </table>
 
 <input type="hidden" name="command" id="command" value="modify"/><br/>
-
+<input type="hidden" name="userNo"  id="userNo"/><br/>
 </form>
 
 </body>

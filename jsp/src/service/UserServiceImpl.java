@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService{
 			return rCnt;
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		return 0;
 	}

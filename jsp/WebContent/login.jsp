@@ -14,7 +14,6 @@ if(session.getAttribute("user")!=null){
 	user= (Map)session.getAttribute("user");	
 }
 if(user ==null){
-
 %>
 <form action="login.user" method=post>
 아이디:<input type="text" name="id"><br>

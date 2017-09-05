@@ -53,8 +53,15 @@ function setEvent(){
 				au.send();			
 			}
 		}else{
-			var userNum = this.getAttribute("data-num");
-			alert(userNum);
+			var userNo = this.getAttribute("data-num");
+			if(this.getAttribute("value")=="수정"){
+				location.href="/modify.jsp?userNo="+userNo;
+			}else if(this.getAttribute("value")=="삭제"){
+				var param ="?command=delete&userNo="+userNo;
+				var au = new AjaxUtil(param);
+				au.send();		
+			}
+			
 		}
 
 	});
@@ -65,9 +72,14 @@ $(document).ready(function(){
 	var au = new AjaxUtil(param);
 	au.send();
 })
-
+$(document).ready(function(){
+	$("#btnHome").click(function(){
+		location.href ="/main.jsp";
+	})
+})
 
 </script>
+<input type="button" id="btnHome" value="홈으로">
 <div id="result_div"></div>
 이름 : <input type = "text" name = "name" id = "name">
 <input type="button" value="검색" data-url="search.user">

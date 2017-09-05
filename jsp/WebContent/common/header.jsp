@@ -8,14 +8,17 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <%
 String rootPath = request.getContextPath();
+Map<String,String> user = null;
 if(session.getAttribute("user")==null){
 	RequestDispatcher dis = request.getRequestDispatcher("/login.jsp");
 	dis.forward(request, response);		
+}else{
+	user = (Map<String,String>)session.getAttribute("user");
 }
 %>
 <script type="text/javascript" src="<%=rootPath%>/JS/jquery-3.2.1.js"></script>
 <script>
-var AjaxUtil = function(params) {
+var AjaxUtil = function(params,p_url) {
 	this.params = params;
  
 	getHttpXmlObj = function() {
@@ -28,7 +31,7 @@ var AjaxUtil = function(params) {
 	}
 	this.xhr = getHttpXmlObj();
 	var method = "post";
-	var url = "test.user";
+	var url = p_url ? p_url:"test.user";
 	var aSync = true;
 	this.xhr.callfunc = null;
 	this.xhr.onreadystatechange = function() {
@@ -37,7 +40,7 @@ var AjaxUtil = function(params) {
 				var result = decodeURIComponent(this.responseText);
 				var re = JSON.parse(result);
 				if(this.callfunc){
-					this.callfunc(result);
+					this.callfunc(re);
 				}else{
 					alert(re.msg);
 					location.href=re.url;
@@ -48,11 +51,16 @@ var AjaxUtil = function(params) {
 	this.changeCallBack = function(func) {
 		this.xhr.callfunc = func;
 	}
-	this.xhr.open(method, url + params, aSync);
+	this.xhr.open(method, url+params, aSync);
 	this.send = function() {
 		this.xhr.send.arguments = this;
 		this.xhr.send(params);
 	}
 }
- 
+$(document).ready(function(){
+	$("#btnHome").click(function(){
+		location.href ="/main.jsp";
+	})
+} )
 </script>
+<input type="button" id="btnHome" value="홈으로">

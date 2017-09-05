@@ -87,6 +87,7 @@ public class UserServlet extends HttpServlet {
 			String pwd = request.getParameter("pwd");
 			String name = request.getParameter("name");
 			String[] hobbies = request.getParameterValues("hobby");
+			String userNo = request.getParameter("userNo");
 			String hobby = "";
 			for (String h : hobbies) {
 				hobby += h + ",";
@@ -98,33 +99,54 @@ public class UserServlet extends HttpServlet {
 			hm.put("pwd", pwd);
 			hm.put("name", name);
 			hm.put("hobby", hobby);
+			hm.put("user_no", userNo);
 
 			HttpSession session = request.getSession();
-			Map<String, String> user = (Map) session.getAttribute("user");
-			hm.put("user_no", user.get("user_no"));
 			int rCnt = us.updateUser(hm);
 			String result = "회원정보 수정에 실패하셨습니다.";
 			if (rCnt == 1) {
-				session.invalidate();
-				result = "<script>";
-				result += "alert('회원수정에 성공하셨습니다. 다시 로그인해주시기 바랍니다.');";
-				result += "location.href='/login.jsp';";
-				result += "</script>";
+				Map<String,String> user = (Map<String, String>)session.getAttribute("user");
+				if(user.get("admin").equals("1")) {
+					result = "<script>";
+					result += "alert('회원수정에 성공하셨습니다.');";
+					result += "location.href='/list.jsp';";
+					result += "</script>";
+					
+				}else {
+					session.invalidate();
+					result = "<script>";
+					result += "alert('회원수정에 성공하셨습니다. 다시 로그인해주시기 바랍니다.');";
+					result += "location.href='/login.jsp';";
+					result += "</script>";
+				}
+				
+				
 			}
 			doProcess(response, result);
 		} else if (command.equals("delete")) {
+			String userNo = request.getParameter("userNo");
 			Map<String, String> hm = new HashMap<String, String>();
-			HttpSession session = request.getSession();
-			Map<String, String> user = (Map) session.getAttribute("user");
-			hm.put("user_no", user.get("user_no"));
+			hm.put("user_no", userNo);
 			int rCnt = us.deleteUser(hm);
 			String result = "회원탈퇴에 실패하셨습니다.";
 			if (rCnt == 1) {
-				session.invalidate();
-				result = "<script>";
-				result += "alert('회원 탈퇴에 성공하셨습니다.');";
-				result += "location.href='/login.jsp';";
-				result += "</script>";
+				HttpSession session = request.getSession();
+				Map<String,String> user = (Map<String, String>)session.getAttribute("user");
+				if(user.get("admin").equals("1")) {
+					result = "<script>";
+					result += "alert('회원 삭제에 성공하셨습니다.');";
+					result += "location.href='/list.jsp';";
+					result += "</script>";
+				}else {
+					result = "<script>";
+					result += "alert('회원 탈퇴에 성공하셨습니다.');";
+					result += "location.href='/login.jsp';";
+					result += "</script>";
+				}
+				
+				
+				
+			
 			}
 			doProcess(response, result);
 		} else if(command.equals("list")) {

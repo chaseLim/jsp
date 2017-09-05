@@ -2,16 +2,19 @@ package service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface BoardService {
 
 	
-	List<HashMap> selectBoard();
+	List<Map<String,String>> selectBoardList();
 	
-	int insertBoard();
+	Map<String,String> selectBoard();
 	
-	int deleteBoard();
+	int insertBoard(Map<String,String>hm);
 	
-	int updateBoard();
+	int deleteBoard(Map<String,String>hm);
+	
+	int updateBoard(Map<String,String>hm);
 	
 }

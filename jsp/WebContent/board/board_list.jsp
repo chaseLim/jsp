@@ -24,12 +24,43 @@ function callback(result){
 		str += "<td>"+board.content +"</td>";
 		str += "<td>"+board.reg_date +"</td>";
 		str += "<td>"+board.name +"</td>";
-		str += "<td><input type='button' value='수정'></td>";
-		str += "<td><input type='button' value='삭제'></td>";
+		str += "<td><input type='button' value='수정' data-num='"+board.b_num+"'></td>";
+		str += "<td><input type='button' value='삭제' data-num='"+board.b_num+"'></td>";
 		str += "</tr>";
 	}
 	str +="</table>";
 	$("#result_div").html(str);
+	
+	$("input[type='button']").click(function(){
+		var b_num = this.getAttribute("data-num");
+		if(this.value=='수정'){
+			location.href = "/board/board_modify.jsp?b_num="+b_num;
+		}else if(this.value=='삭제'){
+			var param = {};
+			param["b_num"] = b_num;
+			param["command"] = "delete";
+			param =JSON.stringify(param);
+			$.ajax({ 
+		        type     : "POST"
+		    	    ,   url      : "/write.board"
+		    	    ,   dataType : "json" 
+		    	    ,   beforeSend: function(xhr) {
+		    	        xhr.setRequestHeader("Accept", "application/json");
+		    	        xhr.setRequestHeader("Content-Type", "application/json");
+		    	    }
+		    	    ,   data     : param
+		    	    ,   success : function(result){
+		    	    	alert(result.msg);
+		    	    	location.href = result.url;
+		    	    }
+		    	    ,   error : function(xhr, status, e) {
+		    		    	alert("에러 : "+e);
+		    		},
+		    		complete : function(e) {
+		    		}
+			    });
+		}
+	});
 }
 
 $(document).ready(function(){

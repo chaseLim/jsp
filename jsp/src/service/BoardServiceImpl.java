@@ -3,6 +3,7 @@ package service;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,19 +18,34 @@ public class BoardServiceImpl implements BoardService{
 	public int insertBoard(Map<String, String> hm) {
 		String sql = "Insert into board(title, content, reg_date, writer)";
 		sql+="values(?,?,now(),?)";
-		Connection con;
+		Connection con = null;
+		DBCon db = null;
 		try {
-			DBCon db = new DBCon();
+			db = new DBCon();
 			con = db.getCon();
 			PreparedStatement ps = con.prepareStatement(sql);
 			ps.setString(1, hm.get("title"));
 			ps.setString(2, hm.get("content"));
 			ps.setString(3, hm.get("writer"));
 			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			}else {
+				con.rollback();
+			}
 			return rCnt;
 			
 		} catch (Exception e) {
+			try {
+				con.rollback();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
 			e.printStackTrace();
+		}finally {
+			if(db!=null) {
+				db.closeCon();
+			}
 		}
 		
 		return 0;
@@ -37,20 +53,83 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public int deleteBoard(Map<String, String> hm) {
-		// TODO Auto-generated method stub
+		String sql = "delete from board where b_num=?";						
+		Connection con = null;
+		DBCon db = null;
+		try {
+			db = new DBCon();
+			con = db.getCon();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("b_num"));
+			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			}else {
+				con.rollback();
+			}
+			return rCnt;
+			
+		} catch (Exception e) {
+			try {
+				con.rollback();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}finally {
+			if(db!=null) {
+				db.closeCon();
+			}
+		}
+		
 		return 0;
 	}
 
 	@Override
 	public int updateBoard(Map<String, String> hm) {
-		// TODO Auto-generated method stub
+		String sql = "update board ";
+		sql +=" set title=?, content=?, writer=?";
+		sql +=" where b_num=?";
+						
+		Connection con = null;
+		DBCon db = null;
+		try {
+			db = new DBCon();
+			con = db.getCon();
+			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("title"));
+			ps.setString(2, hm.get("content"));
+			ps.setString(3, hm.get("writer"));
+			ps.setString(4, hm.get("b_num"));
+			int rCnt = ps.executeUpdate();
+			if(rCnt==1) {
+				con.commit();
+			}else {
+				con.rollback();
+			}
+			return rCnt;
+			
+		} catch (Exception e) {
+			try {
+				con.rollback();
+			}catch(SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}finally {
+			if(db!=null) {
+				db.closeCon();
+			}
+		}
+		
 		return 0;
 	}
 
 	@Override
-	public List<Map<String, String>> selectBoardList() {
+	public List<Map<String, String>> selectBoardList(Map<String,String>hm) {
 		Connection con;		
 		List<Map<String,String>> boardList = new ArrayList<Map<String,String>>();
+		
 		try {
 			DBCon db = new DBCon();
 			con = db.getCon();
@@ -75,29 +154,32 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public HashMap selectBoard() {
+	public Map<String,String> selectBoard(Map<String,String>hm) {
 		Connection con;		
-		List<Map<String,String>> userList = new ArrayList<Map<String,String>>();
+		Map<String,String> rHm = new HashMap<String, String>();
 		try {
 			DBCon db = new DBCon();
 			con = db.getCon();
-			String sql = "select * from board where 1=1";
+			String sql = "select b.*, u.name from user as u,board as b"+
+			" where u.user_no = b.writer and b_num=?";
 			PreparedStatement ps = con.prepareStatement(sql);
+			ps.setString(1, hm.get("b_num"));
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				Map<String,String> rHm = new HashMap<String, String>();
-				rHm.put("id", rs.getString("id"));	
-				rHm.put("user_no", rs.getString("user_no"));				
-				rHm.put("name", rs.getString("name"));
-				rHm.put("hobby", rs.getString("hobby"));
-				rHm.put("admin", rs.getString("admin"));	
-				userList.add(rHm);
+				rHm.put("b_num", rs.getString("b_num"));	
+				rHm.put("title", rs.getString("title"));				
+				rHm.put("content", rs.getString("content"));
+				rHm.put("reg_date", rs.getString("reg_date"));
+				rHm.put("writer", rs.getString("writer"));	
+				rHm.put("name", rs.getString("name"));	
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		return null;
+		return rHm;
 	}
+
+	
 
 	
 

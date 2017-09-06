@@ -13,10 +13,20 @@ public class DBCon {
 		String pwd = "ksysgfd3579";
 		Class.forName("org.mariadb.jdbc.Driver");
 		con = DriverManager.getConnection(url, id, pwd);
-		
+		con.setAutoCommit(false);
 	}
 	public Connection getCon() {
 		return con;
+	}
+	public void closeCon() {
+		if(con!=null) {
+			try {
+				con.close();
+			}catch(SQLException e) {
+				e.printStackTrace();				
+			}
+			con = null;			
+		}
 	}
 
 }

@@ -3,14 +3,40 @@ package dto;
 public class GoodsInfo {
 	private int giNum;
 	private String giName;
+	private String name;
+	private String name2;
 	private String giDesc;
 	private int viNum;
 	private String giCredat;
-	private String giMofDat;
+	private String giMofdat;
 	private int giCreusr;
-	private int giMofusr;
+	private int gimofusr;
 	
 	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName2() {
+		return name2;
+	}
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+	public String getGiMofdat() {
+		return giMofdat;
+	}
+	public void setGiMofdat(String giMofdat) {
+		this.giMofdat = giMofdat;
+	}
+	public int getGimofusr() {
+		return gimofusr;
+	}
+	public void setGimofusr(int gimofusr) {
+		this.gimofusr = gimofusr;
+	}
 	public int getGiNum() {
 		return giNum;
 	}
@@ -42,10 +68,10 @@ public class GoodsInfo {
 		this.giCredat = giCredat;
 	}
 	public String getGiMofDat() {
-		return giMofDat;
+		return giMofdat;
 	}
-	public void setGiMofDat(String giMofDat) {
-		this.giMofDat = giMofDat;
+	public void setGiMofDat(String giMofdat) {
+		this.giMofdat = giMofdat;
 	}
 	public int getGiCreusr() {
 		return giCreusr;
@@ -54,9 +80,9 @@ public class GoodsInfo {
 		this.giCreusr = giCreusr;
 	}
 	public int getGiMofusr() {
-		return giMofusr;
+		return gimofusr;
 	}
-	public void setGiMofusr(int giMofusr) {
-		this.giMofusr = giMofusr;
+	public void setGiMofusr(int gimofusr) {
+		this.gimofusr = gimofusr;
 	}
 }

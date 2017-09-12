@@ -172,6 +172,13 @@ public class UserServlet extends HttpServlet {
 			Gson g = new Gson();
 			String result = g.toJson(hm);
 			doProcess(response, result);
+		}else if(command.equals("list2")) {
+			Map<String, String> hm = new HashMap<String,String>();
+			hm.put("name", request.getParameter("name"));
+			List<Map<String,String>>userList = us.getUserList(hm);
+			Gson g = new Gson();
+			String result = g.toJson(userList);
+			doProcess(response, result);			
 		}
 	}
 

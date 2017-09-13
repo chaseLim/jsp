@@ -5,8 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
- 
-    <div class="container">
+	<div class="container">
 	<table id="table" data-height="460"
 		class="table table-bordered table-hover">
 		<thead>
@@ -26,7 +25,7 @@
 		</tr>
 		</thead>
 		<c:forEach items="${goodsList}" var="goods">
-			<tr>
+			<tr data-ginum="${goods.giNum}">
 				<td><c:out value="${goods.giNum}" /></td>
 				<td><c:out value="${goods.giName}" /></td>
 				<td><c:out value="${goods.giDesc}" /></td>
@@ -50,7 +49,7 @@
 			</tr>
 		</c:forEach>
 	</table>
-	<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalTable">
+	<button type="button" class="btn btn-primary btn-default" data-toggle="modal" data-target="#modalTable">
             상품입력
         </button>
         <div class="modal fade" id="modalTable" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -65,11 +64,11 @@
                         <table id="table1" data-toggle="table" data-height="299">
                             <tr>
                                 <td >상품명</td>
-                                <td ><input type="text" name="giName" id="giName"/></td>
+                                <td ><input type="text" name="giName2" id="giName2"/></td>
                             </tr>
                             <tr>
                                 <td >상품설명</td>
-                                <td ><input type="text" name="giDesc" id="giName"/></td>
+                                <td ><input type="text" name="giDesc" id="giDesc"/></td>
                             </tr>
                             <tr>
                                 <td >회사</td>
@@ -84,12 +83,15 @@
                         </table>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-primary" id="btnSave" >SAVE</button>
+                        <button type="button" class="btn btn-default btn-primary" style="display:none" id="btnDel" >DELETE</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 	</div>
+<input type="hidden" id="giNum"/>
 </body>
 <script>
 var $table = $('#table1');
@@ -97,6 +99,62 @@ $(function () {
     $('#modalTable').on('shown.bs.modal', function () {
         $table.bootstrapTable('resetView');
     });
+    $("#btnDel").click(function(){
+		var param = {};
+		param["giNum"] = $("#giNum").val();
+		param = "?command=delete&param=" + JSON.stringify(param);
+		param = encodeURI(param);
+		var au = new AjaxUtil(param, "insert.goods");
+		au.changeCallBack(callback)
+		au.send();
+    })
+	$("#btnSave").click(function(){
+		var param = {};
+		param["giName"] = $("#giName2").val();
+		param["giDesc"] = $("#giDesc").val();
+		param["viNum"] = "" + $("#viNum").val();
+		if(this.innerHTML=="SAVE"){
+			param = "?command=insert&param=" + JSON.stringify(param);
+			param = encodeURI(param);
+			var au = new AjaxUtil(param, "insert.goods");
+			au.changeCallBack(callback)
+			au.send();
+		}else{
+			param["giNum"] = "" + $("#giNum").val();
+			param = "?command=update&param=" + JSON.stringify(param);
+			param = encodeURI(param);
+			var au = new AjaxUtil(param, "insert.goods");
+			au.changeCallBack(callback)
+			au.send();
+		}
+	});
+	$("[data-ginum]").click(function(){
+		var giNum = this.getAttribute("data-ginum");
+		var param = {};
+		param["giNum"] = giNum;
+		param = "?command=view&param=" + JSON.stringify(param);
+		param = encodeURI(param);
+		var au = new AjaxUtil(param, "view.goods");
+		au.changeCallBack(callbackView)
+		au.send();
+	})
 });
+function callbackView(result){
+	$("[data-target]").click();
+	$("#giName2").val(result.giName);
+	$("#giDesc").val(result.giDesc);
+	$("#viNum").val(result.viNum);
+	$("#giNum").val(result.giNum);
+	$("#btnSave").html("UPDATE");
+	$("#btnDel").attr("style","");
+}
+function callback(result){
+	alert(result.msg)
+	if(result.insert){
+		if(result.insert=="ok"){
+			location.reload();
+		}
+	}
+}
 </script>
 </html>

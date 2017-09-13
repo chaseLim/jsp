@@ -3,40 +3,15 @@ package dto;
 public class GoodsInfo {
 	private int giNum;
 	private String giName;
-	private String name;
-	private String name2;
 	private String giDesc;
 	private int viNum;
 	private String giCredat;
 	private String giMofdat;
 	private int giCreusr;
-	private int gimofusr;
+	private int giMofusr;
+	private String name;
+	private String name2;
 	
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getName2() {
-		return name2;
-	}
-	public void setName2(String name2) {
-		this.name2 = name2;
-	}
-	public String getGiMofdat() {
-		return giMofdat;
-	}
-	public void setGiMofdat(String giMofdat) {
-		this.giMofdat = giMofdat;
-	}
-	public int getGimofusr() {
-		return gimofusr;
-	}
-	public void setGimofusr(int gimofusr) {
-		this.gimofusr = gimofusr;
-	}
 	public int getGiNum() {
 		return giNum;
 	}
@@ -67,10 +42,10 @@ public class GoodsInfo {
 	public void setGiCredat(String giCredat) {
 		this.giCredat = giCredat;
 	}
-	public String getGiMofDat() {
+	public String getGiMofdat() {
 		return giMofdat;
 	}
-	public void setGiMofDat(String giMofdat) {
+	public void setGiMofdat(String giMofdat) {
 		this.giMofdat = giMofdat;
 	}
 	public int getGiCreusr() {
@@ -80,9 +55,32 @@ public class GoodsInfo {
 		this.giCreusr = giCreusr;
 	}
 	public int getGiMofusr() {
-		return gimofusr;
+		return giMofusr;
 	}
-	public void setGiMofusr(int gimofusr) {
-		this.gimofusr = gimofusr;
+	public void setGiMofusr(int giMofusr) {
+		this.giMofusr = giMofusr;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getName2() {
+		return name2;
+	}
+	public void setName2(String name2) {
+		this.name2 = name2;
+	}
+	@Override
+	public String toString() {
+		return "GoodsInfo [giNum=" + giNum + ", giName=" + giName + ", giDesc=" + giDesc + ", viNum=" + viNum
+				+ ", giCredat=" + giCredat + ", giMofdat=" + giMofdat + ", giCreusr=" + giCreusr + ", giMofusr="
+				+ giMofusr + ", name=" + name + ", name2=" + name2 + "]";
+	}
+	
+	
 }
+	
+	
+	
